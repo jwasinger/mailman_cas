@@ -1,0 +1,8 @@
+#!/bin/bash
+
+#delete mailman user and group
+userdel 'mailman'
+groupdel 'mailman'
+
+#delete directory /usr/local/mailman... I think this is all that needs to be done
+#perhaps there are some aliases that mailman has created.

@@ -1,0 +1,152 @@
+KoreanCodecs version 2.0.5
+==========================
+
+Copyright(C) Hye-Shik Chang, 2002.
+$Id: README.en,v 1.19 2002/07/23 18:25:31 perky Exp $
+
+
+
+Introduction
+------------
+
+This package provides Unicode codecs that make Python aware of
+Korean character encodings such as EUC-KR, CP949 and ISO-2022-KR.
+By using this package, Korean characters can be treated as a
+character string instead of a byte sequence.
+
+The Unicode-related API in Python was proposed by Marc-Andre
+Lemburg and defined in the following specification:
+
+  http://starship.python.net/crew/lemburg/unicode-proposal.txt
+
+The provided codecs follow the proposal version 1.8.  Please
+consult the specification for the details of the codecs.
+
+The latest version of this package is available at:
+
+  http://sourceforge.net/projects/koco/
+
+
+Requirement
+-----------
+
+This package requires Python with Unicode support (version 1.6
+or later).
+
+
+This package can be easily installed by means of the Distutils
+(Python Distribution Utilities).  Simply issue the following
+command, after being root if necessary:
+
+  python setup.py install
+
+If you want to use a Korean encoding as the default one, add a
+line
+
+  sys.set_string_encoding(ENCODING)
+
+in case of Python 1.6, or
+
+  sys.setdefaultencoding(ENCODING)
+
+in case of Python 2.0, to the site-wide configuration file
+`site.py', where ENCODING is one of the following names:
+
+  "korean.euc-kr"
+  "korean.cp949"
+  "korean.johab"
+  "korean.iso-2022-kr"
+
+Also, if you have been installed KoreanCodecs version 2.0 or
+older, please uninstall it by the following command:
+
+  python uninstall.py
+
+
+Codec Names
+-----------
+
+This package provides the following encoding names and their
+corresponding codec names:
+
+o Wansung
+  - korean.python.euc-kr
+  - korean.python.cp949
+  - korean.c.euc-kr
+  - korean.c.cp949
+
+o Johab
+  - korean.johab
+
+o ISO-2022-KR (RFC1557)
+  - korean.iso-2022-kr
+
+o Unicode Johab
+  - korean.unijohab
+
+o Qwerty Key Stroke Mapping
+  - korean.qwerty2bul
+
+You can omit 'korean.' after importing 'korean.aliases' module.
+
+
+Addition Modules
+----------------
+
+This package have one bonus module except codecs.
+
+korean.hangul
+ : You can split, join, analyze Hangul Code easily with this.
+
+
+History
+-------
+
+o Version 2.0.5  - 24 July 2002
+  - Add two new characters which is introduced by KSX1001-1998
+    (euro symbol and registered mark)
+  - Raise not UnicodeError but ValueError when keyword argument
+    "errors" is invalid.
+  - hangul.isJaeum and hangul.isMoeum evaluate a entire string,
+    same as str.isdigit and its friends do.
+
+o Version 2.0.4  - 30 April 2002
+  - Copyright has changed to LGPL
+
+o Version 2.0.3  - 29 April 2002
+  - added hangul module C implementation
+    (which means, johab, unijohab and qwerty2bul have gotten faster)
+  - added StreamReader C implementation for EUC-KR and CP949
+  - change jamo short names to confirm to Unicode 3.2 on hangul module
+  - added conjoin, disjoint, format in hangul module
+    (format function is a unicode formatter that fixes korean suffixes
+     after each arguments)
+  - improvemented in platform and version compatibilities
+  - fixed some refcount leaks on C extensions
+
+o Version 2.0.2  - 16 March 2002
+  - added euc-kr and cp949 codec C implementations
+
+o Version 2.0.1  - 9 March 2002
+  - Copyright changed to Python License
+  - Added 4 aliases
+
+o Version 2.0  - 1 March 2002
+  - Newly started with version 2 for less confusing with
+    KoreanCodecs 1.x of Man-Yong Lee
+
+
+Acknowledgments
+---------------
+
+Documentation and Module layout was hinted from JapaneseCodecs of
+Tamito KAJIYAMA. I appreciate his invaluable work.
+
+
+Author
+------
+
+Hye-Shik Chang <perky@FreeBSD.org>
+
+Any comments, suggestions, and/or patches are very welcome.
+Thank you for using KoreanCodecs!

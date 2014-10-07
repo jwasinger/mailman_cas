@@ -1,0 +1,85 @@
+ROUGH Benchmark Tests (just for fun ;)
+--------------------------------------
+
+$Id: benchmarks.txt,v 1.2 2002/04/28 11:35:34 perky Exp $
+
+CPU:        Intel Pentium III 800
+OS:         FreeBSD 4.5
+Python:     Python 2.2.1
+C Compiler: Intel C Compiler 6.0
+
+
+
+Decoder
+=======
+
+1000 times with 2901 bytes string
+
+                      korean.c      korean.python      ratio
+                    -----------   -----------------  ----------
+EUC-KR:                0.04s           28.24s         74900 %
+                      (69MB/s)        (0.09MB/s)
+
+CP949:                 0.05s           40.27s         83896 %
+                      (57MB/s)        (0.06MB/s)
+
+
+Encoder
+=======
+
+1000 times with 2660 unicode characters
+
+                      korean.c      korean.python      ratio
+                    -----------   -----------------  ----------
+EUC-KR:                0.05s           32.14s         64200 %
+                    (53 MUchar/s)  (82.7 KUchar/s)
+
+CP949:                 0.07s           32.60s         46500 %
+                    (38 MUchar/s)  (81.5 KUchar/s)
+
+
+StreamReader
+============
+
+1000 times with file that have 99 lines / 2901 bytes
+
+                      korean.c      korean.python      ratio
+                    -----------   -----------------  ----------
+EUC-KR read(100):      0.03s            1.17s          3900 %
+                     (3.26MB/s)        (85K/s)
+
+EUC-KR read():         0.07s           27.00s          9310 %
+                     (38.9MB/s)       (107K/s)
+
+EUC-KR readline()*5:   0.13s            1.60s          1230 %
+                   (38461 lines/s)   (3125 lines/s)
+
+EUC-KR readlines():    0.29s           27.51s          9486 %
+                     (10.0MB/s)       (105K/s)
+
+CP949 read(100):       0.03s            1.12s          3844 %
+                     (3.26MB/s)      (0.08MB/s)
+
+CP949 read():          0.06s           30.00s          5000 %
+                     (40.7MB/s)      (0.09MB/s)
+
+CP949 readline()*5:    0.07s            2.02s          2612 %
+                   (71428 lines/s)  (2475 lines/s)
+
+CP949 readlines():     0.19s           45.59s         23309 %
+                    (14.56MB/s)      (0.06MB/s)
+
+
+Hangul
+======
+
+10000 times
+
+                      korean.c      korean.python      ratio
+                    -----------   -----------------  ----------
+hangul.join:           0.19s            3.06s          15396 %
+                    (52631 op/s)     (3267 op/s)
+
+hangul.split:          0.26s            6.50s          24753 %
+                    (38461 op/s)     (1537 op/s)
+

@@ -1,0 +1,46 @@
+#!/bin/bash
+
+MAILMAN_INSTALL_DIR='/usr/local/mailman'
+MAILMAN_GROUP_NAME='mailman'
+MAILMAN_USER_NAME='mailman'
+
+user_exists=$(cat /etc/passwd | grep $MAILMAN_USER_NAME)
+group_exists=$(cat /etc/group | grep $MAILMAN_GROUP_NAME)
+
+#create the mailman user if it doesn't exist already exist
+if [ "$user_exists" == "" ]; then
+    useradd -c 'GNU Mailman' -s /no/shell -d /no/home -g $MAILMAN_GROUP_NAME $MAILMAN_USER_NAME    
+fi
+
+#create the mailman group if it doesn't already exist
+if [ "$group_exists" == "" ]; then
+    groupadd $MAILMAN_GROUP_NAME
+fi
+
+#create mailman install directory in /usr/local/mailman
+#NOTE: mailman must be installed in location that allows setgid programs
+mkdir $MAILMAN_INSTALL_DIR
+cd $MAILMAN_INSTALL_DIR
+chgrp mailman .
+chown mailman .
+chmod a+rx, g+ws
+
+cd -
+cd mailman-2.1.12
+
+./configure --with-cgi-gid=www-data
+make
+make install
+
+cd $MAILMAN_INSTALL_DIR
+
+chgrp --recursive $MAILMAN_GROUP_NAME ./*
+chown --recursive $MAILMAN_USER_NAME ./*
+
+chmod --recursive 02775 .
+
+chmod --recursive u+s ./cgi-bin
+chmod --recursive g+s ./cgi-bin
+
+chmod u+s ./mail/mailman
+chmod g+s ./mail/mailman

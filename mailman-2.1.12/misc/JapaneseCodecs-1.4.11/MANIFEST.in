@@ -1,0 +1,13 @@
+# Tamito KAJIYAMA <30 November 2000>
+# $Id: MANIFEST.in,v 1.4 2002/06/04 10:30:04 kajiyama Exp $
+include README.en
+include README.ja
+include setup.py
+include MANIFEST.in
+include japanese.pth
+recursive-include src _japanese_codecs.[ch] hgen.py
+recursive-include japanese *
+recursive-exclude japanese *.pyc *.so
+recursive-include test *
+recursive-exclude test *.pyc
+include uninstall.py

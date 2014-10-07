@@ -1,0 +1,123 @@
+Quick Start Guide for KoreanCodecs
+----------------------------------
+
+$Id: quick_start.txt,v 1.2 2002/04/28 09:10:09 perky Exp $
+
+(this document has EUC-KR characters)
+
+
+1. Installation
+
+ * Normal
+
+   $ python setup.py install
+
+
+ * Without aliases (without extra path on python2.0)
+
+   $ python setup.py install --without-aliases
+
+
+ * Without C Extensions
+
+   $ python setup.py install --without-extension
+
+
+2. Encoding/Decoding
+
+ * EUC-KR Codec (the most widely-used Korean encoding)
+
+>>> unicode("한글이 좋아.", "euc-kr")
+u'\ud55c\uae00\uc774 \uc88b\uc544.'
+>>> print _.encode("euc-kr")
+한글이 좋아.
+
+ * CP949 Codec (yet another widely-used encoding among M$ windows users)
+
+>>> unicode("장사는 돈을 버는 것이 아니라 사람을 버는 것이라 하였습니다 ☆ 商道 ☆", "cp949")
+u'\uc7a5\uc0ac\ub294 \ub3c8\uc744 ...'
+>>> print _[-10:].encode("cp949")
+습니다 ☆ 商道 ☆
+
+ * Johab, Unijohab and ISO-2022-KR Codecs
+
+  (same way with above described)
+
+ * Qwerty2bul Codec
+
+>>> unicode("원숭이 엉덩이는 빨개", "euc-kr")
+u'\uc6d0\uc22d\uc774 \uc5c9\ub369\uc774\ub294 \ube68\uac1c'
+>>> _.encode("qwerty2bul")
+'dnjstnddl djdejddlsms Qkfro'
+>>> unicode("Qkfrks rjtdms tkrhk tkrhksms aktdlTdj", "qwerty2bul")
+u'\ube68\uac04 \uac83\uc740 \uc0ac\uacfc \uc0ac\uacfc\ub294 \ub9db\uc788\uc5b4'
+>>> print _.encode("euc-kr")
+빨간 것은 사과 사과는 맛있어
+
+
+3. StreamReader, StreamWriter
+
+>>> import codecs
+>>> f = codecs.open("quick_start.txt", encoding="euc-kr")
+>>> lines = f.readlines()
+>>> len(lines)
+103
+>>> lines[25]
+u'2. Encoding/Decoding\n'
+>>> lines[96]
+u'>>> print hangul.format(fmt, result=u("\ub7ec\uc2a4\ud2f0\ub124\uc77c"), subj1=u("\uc704\uc2a4\ud0a4"), subj2=u("\ub4dc\ub78c\ubdd4")).encode("euc-kr")\n'
+
+>>> f = codecs.open("testing.txt", "w", encoding="qwerty2bul")
+>>> f.write(unicode("핑거휠레 맛있다", "euc-kr"))
+>>> f.close()
+>>> open("testing.txt").read()
+'vldrjgnlffp aktdlTek'
+
+
+4. Hangul Module
+
+>>> from korean import hangul
+>>> dir(hangul)
+['A', 'AE', 'B', 'BB', 'BS', 'C', 'CHOSUNG_FILLER', ... ]
+>>> print hangul.DD.encode("euc-kr"), hangul.GS.encode("euc-kr")
+ㄸ ㄳ
+>>> print u', '.join(hangul.Chosung).encode('euc-kr')
+ㄱ, ㄲ, ㄴ, ㄷ, ㄸ, ㄹ, ㅁ, ㅂ, ㅃ, ㅅ, ㅆ, ㅇ, ㅈ, ㅉ, ㅊ, ㅋ, ㅌ, ㅍ, ㅎ
+>>> hangul.ishangul(u'A')
+False
+>>> hangul.ishangul(unicode("한", "euc-kr"))
+True
+>>> hangul.isJaeum(unicode("티", "euc-kr"))
+False
+>>> hangul.isJaeum(unicode("ㅌ", "euc-kr"))
+True
+
+>>> u = lambda x: unicode(x, "euc-kr")
+>>> print u', '.join(hangul.split(u("칡"))).encode("euc-kr")
+ㅊ, ㅣ, ㄺ
+>>> print hangul.join([hangul.J, hangul.WA, hangul.L]).encode("euc-kr")
+좔
+>>> print hangul.join([hangul.K, hangul.WAE, hangul.Null]).encode("euc-kr")
+쾌
+
+>>> u("꼬부랑 할머니가 꼬부랑 고개길을")
+u'\uaf2c\ubd80\ub791 ...
+>>> hangul.disjoint(_)
+u'\u1101\u1169\u1107\u116e ...
+>>> hangul.conjoin(_)
+u'\uaf2c\ubd80\ub791 ...
+
+>>> fmt = u("우리 예쁜 %s(이), %s이 좋아 %s이 좋아?")
+>>> print hangul.format(fmt, u("아라"), u("아빠"), u("엄마")).encode("euc-kr")
+우리 예쁜 아라, 아빠가 좋아 엄마가 좋아?
+>>> print hangul.format(fmt, u("은정"), u("술"), u("물")).encode("euc-kr")
+우리 예쁜 은정이, 술이 좋아 물이 좋아?
+
+>>> fmt = u("%(subj1)s와 %(subj2)s을 합치면 %(result)s가 생성된다.")
+>>> print hangul.format(fmt, result=u("러스티네일"), subj1=u("위스키"), subj2=u("드람뷔")).encode("euc-kr")
+위스키와 드람뷔를 합치면 러스티네일이 생성된다.
+>>> print hangul.format(fmt, subj2=u("메칸더투"), subj1=u("메칸더원"), result=u("66% 메칸더브이")).encode("euc-kr")
+메칸더원과 메칸더투를 합치면 66% 메칸더브이가 생성된다.
+
+
+Yes, you got it!

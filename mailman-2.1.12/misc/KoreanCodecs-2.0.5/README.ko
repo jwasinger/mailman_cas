@@ -1,0 +1,154 @@
+한글코덱 버젼 2.0.5
+===================
+
+Copyright(C) Hye-Shik Chang, 2002.
+$Id: README.ko,v 1.18 2002/07/23 18:25:31 perky Exp $
+
+*캠페인* 인터넷에서 한글 맞춤법을 지킵시다. ^-^/~
+
+
+소개
+----
+
+이 패키지는 EUC-KR, CP949, ISO-2022-KR 같은 한글을 위해 사용되는
+문자셋을 유니코드로 변환하기 위한 코덱의 모음입니다. 이 패키지를
+사용함으로써 한글 글자들을 바이트 연속 대신 문자열로 다룰 수 있게
+됩니다.
+
+파이썬의 유니코드 관련 API는 Marc-Andre Lemburg가 제안했으며
+다음 명세사항에 정의되어 있습니다:
+
+  http://starship.python.net/crew/lemburg/unicode-proposal.txt
+
+이 코덱 패키지는 제안서 버젼 1.8을 따르고 있습니다. 코덱의 상세
+사항에 대해서는 명세를 봐 주세요.
+
+이 패키지의 최근 버젼은 여기서 구할 수 있습니다:
+
+  http://sourceforge.net/projects/koco
+
+
+요구사항
+--------
+
+이 패키지는 유니코드를 지원하는 파이썬(버젼 1.6또는 그 이후)이
+필요합니다.
+
+이 패키지는 distutils(파이썬 표준 배포 유틸리티)를 이용하여 쉽게
+설치할 수 있습니다. 다음 명령으로 간단하게 설치할 수 있습니다.
+상황에 따라서 root 권한이 필요할 수도 있습니다:
+
+  python setup.py install
+
+만약, 제공된 한글 인코딩 중의 하나를 디폴트로 정하고 싶으면,
+코드에 다음 줄을 추가하면 됩니다.
+
+파이썬 1.6의 경우에는:
+
+  sys.set_string_encoding(ENCODING)
+
+파이썬 2.0의 경우에는:
+
+  sys.setdefaultencoding(ENCODING)
+
+위 줄을 전체 환경설정인 site.py에 추가하면 됩니다. 인코딩은
+주로 다음 중 하나가 될 것입니다:
+
+  "korean.euc-kr"
+  "korean.cp949"
+  "korean.johab"
+  "korean.iso-2022-kr"
+
+그리고, KoreanCodecs를 버젼 2.0 이상 설치해 두고 있는 경우에는
+다음 명령을 이용해서 제거할 수 있습니다:
+
+  python uninstall.py
+
+
+코덱 이름
+---------
+
+이 패키지에서는 다음 인코딩들을 제공합니다:
+
+o 완성형
+  - korean.python.euc-kr  : KS5601 완성형
+  - korean.python.cp949   : Microsoft 확장완성형
+  - korean.c.euc-kr       : C로 작성된 EUC-KR 코덱
+  - korean.c.cp949        : C로 작성된 CP949 코덱
+o 조합형
+  - korean.johab          : 상용 조합형 (8비트)
+o ISO-2022-KR
+  - korean.iso-2022-kr    : RFC1557 한글 인터넷 메시지 인코딩
+o 유니코드 조합형
+  - korean.unijohab       : 유니조합 (MacOS 조합)
+o Qwerty 자판 매핑
+  - korean.qwerty2bul     : 2벌식 - 쿼티자판 매핑
+
+코덱이름에서 korean. 부분은 korean.aliases모듈을 임포트하면 생략할 수
+있습니다.
+
+
+추가 패키지
+-----------
+
+이 패키지에서는 코덱이외의 1개의 추가 모듈도 제공하고 있습니다.
+
+korean.hangul
+ : 유니코드 한글 코드의 분해, 조합, 분석을 간편하게 할 수 있도록
+   한 모듈입니다.
+
+
+역사
+----
+
+o 버젼 2.0.5  2002년 7월 24일
+  - KSX1001-1998에 추가된 유로화 표기와 등록상표 마크를 추가하였습니다.
+  - 인코더와 디코더에서 키워드 인자인 errors가 잘못되었을 때 ValueError
+    를 발생하도록 수정되었습니다.
+  - hangul.isJaeum 등 관련 함수들이 문자열 메쏘드들과 마찬가지로
+    문자열 전체를 판단하여 값을 리턴하도록 변경하였습니다.
+
+o 버젼 2.0.4  2002년 4월 30일
+  - LGPL로 라이센스 변경
+
+o 버젼 2.0.3  2002년 4월 29일
+  - hangul 모듈 C 구현 추가
+    (이 확장으로 johab, unijohab, qwerty2bul 코덱이 빨라집니다.)
+  - EUC-KR, CP949 코덱을 위한 StreamReader C 구현 추가
+  - hangul 모듈 유니코드 3.2 표준으로 자모 약어 변경
+  - hangul 모듈에 conjoin, disjoint, format 함수 추가
+    (format은 포맷된 단어의 종성여부에 따라 뒤의 조사를 수정해주는
+     한글용의 유니코드 포매팅 함수입니다.)
+  - 플랫폼과 버젼별 호환성이 개선되었습니다.
+  - C 구현 코덱들의 참조회수 리킹 버그를 다수 수정
+
+o 버젼 2.0.2  2002년 3월 16일
+  - EUC-KR, CP949 코덱 C 구현 추가
+
+o 버젼 2.0.1  2002년 3월 9일
+  - 파이썬 라이센스로 저작권 변경
+  - 4개의 캐릭터셋 별명 추가
+
+o 버젼 2.0   2002년 3월 1일
+  - 이전의 KoreanCodecs 1.x 와 혼동을 피하기 위해서 버젼
+    2.0 부터 시작
+
+
+알아두기
+--------
+
+문서와 모듈 레이아웃은 Tamito KAJIYAMA씨의 JapaneseCodecs에서
+많은 힌트를 얻었습니다. 감사합니다.
+
+이 코덱은 FreeBSD용 패키지로 쉽게 깔 수 있습니다.
+
+ cd /usr/ports/korean/pycodec && make install clean
+
+
+저자
+----
+
+장혜식 Hye-Shik Chang <perky@FreeBSD.org>
+
+제안이나 버그, 패치는 모두 환영합니다.
+한글코덱을 사용해 주셔서 감사합니다!

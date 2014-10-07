@@ -1,0 +1,12 @@
+# $Id: MANIFEST.in,v 1.9 2002/07/23 17:43:07 perky Exp $
+# Hye-Shik Chang <19 Feb 2002>
+
+include README README.en README.ko
+include LICENSE MANIFEST.in
+
+#recursive-include debian *
+recursive-include test *
+recursive-include doc *
+recursive-include src *.h
+
+global-exclude */CVS/* *.pyc *.pyo

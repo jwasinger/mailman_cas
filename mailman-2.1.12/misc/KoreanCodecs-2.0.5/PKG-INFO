@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: KoreanCodecs
+Version: 2.0.5
+Summary: Korean Codecs for Python Unicode Support
+Home-page: http://sourceforge.net/projects/koco
+Author: Hye-Shik Chang
+Author-email: perky@FreeBSD.org
+License: LGPL
+Description: This package provides Unicode codecs that make Python aware of Korean character encodings such as EUC-KR, CP949 and ISO-2022-KR. By using this package, Korean characters can be treated as a character string instead of a byte sequence.
+Platform: UNKNOWN

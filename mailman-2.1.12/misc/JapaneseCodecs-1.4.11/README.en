@@ -1,0 +1,274 @@
+JapaneseCodecs version 1.4.11
+=============================
+Tamito KAJIYAMA <28 November 2004>
+
+Introduction
+------------
+
+This package provides Unicode codecs that make Python aware of
+Japanese character encodings such as EUC-JP, Shift_JIS and
+ISO-2022-JP.  By using this package, Japanese characters can be
+treated as a character string instead of a byte sequence.
+
+The Unicode-related API in Python was proposed by Marc-Andre
+Lemburg and defined in the following specification:
+
+  http://starship.python.net/crew/lemburg/unicode-proposal.txt
+
+The provided codecs follow the proposal version 1.8.  Please
+consult the specification for the details of the codecs.
+
+The latest version of this package is available at:
+
+  http://www.asahi-net.or.jp/~rd6t-kjym/python/
+
+Requirement
+-----------
+
+This package requires Python with Unicode support (version 1.6
+or later).
+
+Installation
+------------
+
+This package can be easily installed by means of the Distutils
+(Python Distribution Utilities).  Simply issue the following
+command, after being root if necessary:
+
+  python setup.py install
+
+The setup script will register JapaneseCodecs as the default
+codecs for Japanese encodings so that shorter codec names such
+as "euc-jp" and "shift_jis" will be made available.  If you want
+to suppress this registration, specify --without-aliases option
+as follows:
+
+  python setup.py install build_py --without-aliases
+
+If you want to use a Japanese encoding as the default one, add a
+line
+
+  sys.set_string_encoding(ENCODING)
+
+in case of Python 1.6, or
+
+  sys.setdefaultencoding(ENCODING)
+
+in case of Python 2.0, to the site-wide configuration file
+`site.py', where ENCODING is one of the following names:
+
+  "japanese.euc-jp"
+  "japanese.shift_jis"
+  "japanese.ms932"
+  "japanese.iso-2022-jp"
+
+Also, if you have been installed JapaneseCodecs version 1.1.1 or
+older, please uninstall it by the following command:
+
+  python uninstall.py
+
+Codec Names
+-----------
+
+This package provides the following encoding names and their
+corresponding codec names.  The prefix "japanese." can be
+omitted if you've installed the codecs by not specifying
+build_py --without-aliases option.
+
+o EUC-JP
+  - japanese.euc-jp
+  - japanese.ujis
+  - japanese.c.euc-jp
+  - japanese.python.euc-jp
+o Shift_JIS
+  - japanese.shift_jis
+  - japanese.sjis
+  - japanese.c.shift_jis
+  - japanese.python.shift_jis
+o MS932 (Microsoft code page 932)
+  - japanese.ms932
+  - japanese.windows-31j
+  - japanese.c.ms932
+o ISO-2022-JP (7-bit JIS)
+  - japanese.iso-2022-jp
+  - japanese.jis-7
+  - japanese.c.iso-2022-jp
+  - japanese.python.iso-2022-jp
+o ISO-2022-JP-1
+  - japanese.iso-2022-jp-1
+  - japanese.c.iso-2022-jp-1
+  - japanese.python.iso-2022-jp-1
+o ISO-2022-JP-1 + JIS X 0201 Katakana
+  - japanese.iso-2022-jp-ext
+  - japanese.c.iso-2022-jp-ext
+  - japanese.python.iso-2022-jp-ext
+o JIS X 0201 Roman/Katakana
+  - japanese.jis-x-0201-roman
+  - japanese.jis-x-0201-katakana
+
+History
+-------
+
+o Version 1.4.11 <28 November 2004>
+  - Fixed bugs in the StreamReader classes of all codecs that
+    ignored the optional "errors" argument specified when
+    instantiated. (Thanks to OHNUKI Makoto)
+
+o Version 1.4.10 <7 December 2003>
+  - Fixed soundness bugs in Shift_JIS and MS932 decoders that
+    invalid characters are quietly mapped into invalid Unicode
+    characters. (Thanks to Hye-Shik Chang)
+  - Fixed a buffer overflow in the encoder of japanese.c.euc-jp
+    caused by a string that contains a lot of supplement Kanji
+    characters. (Thanks to Atsuo ISHIMOTO)
+  - added an alias "eucjp" for "japanese.euc-jp".
+
+o Version 1.4.9 <8 October 2002>
+  - Changed the corresponding character to 0x2140 in JIS X 0208
+    from U+005C (REVERSE SOLIDUS) to U+FF3C (FULLWIDTH REVERSE
+    SOLIDUS).
+  - Improved the compatibility of the UCS to MBCS mapping in
+    MS932 with Windows. (Thanks to Atsuo ISHIMOTO and Masayuki
+    MORIYAMA)
+  - Improved encode() so that it accepts both Unicode and string 
+    objects.
+  - Improved UnicodeError messages so that 32-bit Unicode code
+    points are properly escaped in the form \UXXXXXXXX.
+  - Added japanese.windows-31j, an alias of japanese.ms932.
+
+o Version 1.4.8 <5 September 2002>
+  - Fixed bugs in EUC-JP, Shift_JIS and MS932 codecs that failed
+    to encode U+00A5 and U+203E which originate from ISO-2022-JP
+    and its variant codecs.
+  - Moved the official home page and changed the author's e-mail
+    address.
+
+o Version 1.4.7 <13 July 2002>
+  - Fixed pure Python codecs so that raise ValueError instead of 
+    UnicodeError when the value of the optinal "errors" argument
+    is invalid.
+  - setup.py: fixed the location into which japanese.pth is
+    installed when using Python 2.2 and later on Windows.
+
+o Version 1.4.6 <4 June 2002>
+  - Fixed bugs in Shift_JIS and MS932 codecs that converted some
+    half-width Katakana characters into wrong Unicode characters.
+    (Thanks to SONE Takeshi)
+  - setup.py: fixed platform-dependent codes for installing
+    japanese.pth.
+  - Added MANIFEST.in to the source distribution.
+
+o Version 1.4.5 <17 April 2002>
+  - Added a configuration package "japanese.aliases" for
+    registering JapaneseCodecs as the system's default Japanese
+    codecs.  Also added --without-aliases option.
+
+o Version 1.4.4 <4 March 2002>
+  - Added a codec for MS932 (Microsoft code page 932)
+    contributed by Atsuo ISHIMOTO. (Thanks a lot!!)
+
+o Version 1.4.3 <27 September 2001>
+  - Modified the mapping rule regarding the character 0x7e in
+    JIS X 0201 Roman.  Now the character is mapped to U+203E
+    (OVERLINE) instead of U+00AF (MACRON).
+  - Fixed a bug that control characters 0x00 through 0x20 and
+    0x7f are considered invalid characters in JIS X 0201 Roman
+    and Katakana. 
+  - Fixed a problem that "make test" fails in Python 2.2.
+
+o Version 1.4.2 <26 September 2001>
+  - Fixed format specifiers (%02x) in error strings.
+    (Thanks to Takahiro TODA).
+
+o Version 1.4.1 <26 September 2001>
+  - Fixed a bug in src/_japanese_codecs.c that some encoders and 
+    decoders raise TypeError if an empty string is given.
+    (Thanks to Toshinori MAENO).
+
+o Version 1.4 <25 September 2001>
+  - Added codecs written in C.
+
+o Version 1.3 <8 June 2001>
+  - Changed the software license from GNU GPL to a BSD variant.
+    There is no change in the software itself.
+
+o Version 1.2.2 <26 January 2001>
+  - Fixed a bug in StreamReader._read() for all codecs.  The
+    value of the size parameter now can be None.
+    (Thanks to Osamu Nakamura <naka@hasaki.sumikin.co.jp>)
+
+o Version 1.2.1 <10 January 2001>
+  - Support for JIS X 0212-1990 supplementary kanji character
+    set was added to the EUC-JP codec.
+  - A new codec for ISO-2022-JP-1 [RFC2237] was added.
+  - Supplementary kanji character set support was added to the
+    codec for ISO-2022-JP plus JIS X 0201 Katakana.  The codec
+    was renamed to ISO-2022-JP-Ext.
+  - Character mapping tables were reorganized and moved into
+    the japanese/mappings directory.
+  - A set of regression tests was added.
+  - Minor bugs were fixed.
+
+o Version 1.2 <16 December 2000>
+  - All codecs are moved into the "japanese" module.
+  - The packages is now installed into $lib/site-packages/.
+  - The ISO-2022-JP codec now maps 0x5c and 0x7e to U+00A5 (yen
+    mark) and U+00AF (overline), respectively, when JIS X 0201
+    Roman is designated.
+    (Thanks to SUZUKI Hisao <suzuki611@okisoft.co.jp>)
+  - New codec for ISO-2022-JP plus JIS X 0201 Katakana is added.
+    (Thanks to SUZUKI Hisao <suzuki611@okisoft.co.jp>)
+  - New codecs for JIS 0201 X Roman and Katakana are added.
+
+o Version 1.1.1 <30 November 2000>
+  - Added Halfwidth Katakana support to EUC-JP and Shift_JIS
+    codecs.
+
+o Version 1.1 <25 November 2000>
+  - Added the new codec for ISO-2022-JP (so-called 7-bit JIS).
+  - Improved read(), readline() and readlines() in StreamReader.
+        
+o Version 1.0.1 <26 October 2000>
+  - Replaced ValueError with UnicodeError.
+    (Thanks to Walter Doerwald <walter@livinglogic.de>)
+
+o Version 1.0 <6 September 2000>
+  - Initial release.
+
+Acknowledgments
+---------------
+
+Part of the program in src/_japanese_codecs.c is based on
+ms932codec.c written by Atsuo ISHIMOTO.  The codec for MS932 was
+also contributed by him.  I appreciate his invaluable work.
+
+License
+-------
+
+Copyright (c) 2001 Tamito KAJIYAMA.  All rights reserved.
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation, and that the name of Tamito KAJIYAMA not be
+used in advertising or publicity pertaining to distribution of the
+software without specific, written prior permission.
+
+TAMITO KAJIYAMA DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+EVENT SHALL TAMITO KAJIYAMA BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+Author
+------
+
+Tamito KAJIYAMA <RD6T-KJYM@asahi-net.or.jp>
+
+Any comments, suggestions, and/or patches are very welcome.
+Thank you for using JapaneseCodecs!
+
+$Id: README.en,v 1.13 2004/11/28 10:16:38 kajiyama Exp $

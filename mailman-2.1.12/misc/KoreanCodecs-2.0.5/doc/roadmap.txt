@@ -1,0 +1,29 @@
+KoreanCodecs Roadmap and Significant Changes
+============================================
+
+2.0     Initial Version
+
+2.0.1   Changed to Python License
+
+2.0.2   Added EUC-KR, CP949 Codecs in C implementation
+
+2.0.3   Added korean.hangul module, StreamReader for EUC-KR and CP949
+        in C implementation
+        Added hangul.format korean unicode formatting facility
+
+2.1     Add new C-implemented codecs: ISO-2022-KR, Unijohab
+        Clean up existing C sources.
+
+2.1.1   Add StreamReader C extension for ISO-2022-KR
+
+
+
+Considering
+-----------
+
+ * hangul.romanize which converts hangul to roman letters
+   with confirming to Korean Standard Pronunciation Convention
+
+ * hangul.translate which converts roman letters to hangul
+   with confirming to Korean Roman Character Translation Convention
+

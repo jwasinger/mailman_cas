@@ -1,0 +1,264 @@
+JapaneseCodecs version 1.4.11
+=============================
+梶山民人 (2004年11月28日)
+
+はじめに
+--------
+
+本パッケージは、Unicode をサポートした Python において、EUC-JP、
+Shift_JIS、ISO-2022-JP などの日本語の文字エンコーディングを利用
+できるようにするためのコデック集です。本パッケージを用いることに
+より、日本語の文字データをバイト列としてではなく文字列として扱え
+るようになります。
+
+Python の Unicode 関連の API は、Marc-Andre Lemburg によって提案
+され、以下の仕様書で定義されています。
+
+  http://starship.python.net/crew/lemburg/unicode-proposal.txt
+
+本パッケージの提供するコデックは Proposal Version 1.8 に準拠して
+います。コデックの詳細については上記の仕様書を参照して下さい。
+
+本パッケージの最新版は以下の場所で公開しています。
+
+  http://www.asahi-net.or.jp/~rd6t-kjym/python/index-ja.html
+
+必要なもの
+----------
+
+本パッケージを利用するには Unicode をサポートした Python が必要
+です。Python 1.6 と Python 2.0 で動作することを確認しています。
+
+インストール方法
+----------------
+
+本パッケージは Distutils (Python Distribution Utilities) を利用
+しており、インストールは非常に簡単です。必要ならば root になった
+上で、以下のコマンドを実行して下さい。
+
+  python setup.py install
+
+何も指定しなければ JapaneseCodecs をデフォルトの日本語コデックと
+して登録します ("euc-jp" や "shift_jis" などの短いエンコーディン
+グ名が利用可能になります)。以下のように --without-aliases オプショ
+ンを指定するとを登録処理をスキップします。
+
+  python setup.py install build_py --without-aliases
+
+日本語エンコーディングを標準のエンコーディングとして使用したい場
+合は、Python 1.6 の場合は
+
+  sys.set_string_encoding(ENCODING)
+
+という行を、Python 2.0 の場合は
+
+  sys.setdefaultencoding(ENCODING)
+
+という行を、site.py (サイト全体で有効な設定ファイル) に追加して
+下さい。ここで、ENCODING には以下のいずれかを指定します。
+
+  "japanese.euc-jp"
+  "japanese.shift_jis"
+  "japanese.ms932"
+  "japanese.iso-2022-jp"
+
+また、バージョン 1.1.1 以前の JapaneseCodecs をインストール済み
+の場合は、次のコマンドを実行して古いファイルを削除してください。
+
+  python uninstall.py
+
+コデック名
+----------
+
+本パッケージが提供するエンコーディング名とそれに対応するコデック
+名は以下の通りです。--without-aliases オプションを指定せずにイン
+ストールした場合は先頭の "japanese." を省略することができます。
+
+o EUC-JP
+  - japanese.euc-jp
+  - japanese.ujis
+  - japanese.c.euc-jp
+  - japanese.python.euc-jp
+o Shift_JIS
+  - japanese.shift_jis
+  - japanese.sjis
+  - japanese.c.shift_jis
+  - japanese.python.shift_jis
+o MS932 (Microsoft code page 932)
+  - japanese.ms932
+  - japanese.windows-31j
+  - japanese.c.ms932
+o ISO-2022-JP (7-bit JIS)
+  - japanese.iso-2022-jp
+  - japanese.jis-7
+  - japanese.c.iso-2022-jp
+  - japanese.python.iso-2022-jp
+o ISO-2022-JP-1
+  - japanese.iso-2022-jp-1
+  - japanese.c.iso-2022-jp-1
+  - japanese.python.iso-2022-jp-1
+o ISO-2022-JP-1 + JIS X 0201 片仮名
+  - japanese.iso-2022-jp-ext
+  - japanese.c.iso-2022-jp-ext
+  - japanese.python.iso-2022-jp-ext
+o JIS X 0201 Roman/Katakana
+  - japanese.jis-x-0201-roman
+  - japanese.jis-x-0201-katakana
+
+変更履歴
+--------
+
+o バージョン 1.4.11 (2004年11月28日)
+  - すべてのコデックの StreamReader クラスにおいて、インスタンス
+    生成時のオプション引数 errors が無視されるという問題を修正。
+    (Thanks to 大貫さん)
+
+o バージョン 1.4.10 (2003年12月7日)
+  - Shift_JIS および MS932 の各コデックにおいて不正な文字を不正
+    にデコードしてしまう問題を修正。(Thanks to Hye-Shik Chang)
+  - JIS X 0212 の補助漢字が多く含まれる文字列をエンコードすると
+    japanese.c.euc-jp がバッファオーバーフローを起こすバグを修正。
+    (Thanks to 石本さん)
+  - "japanese.euc-jp" の別名 "eucjp" を追加した。
+
+o バージョン 1.4.9 (2002年10月8日)
+  - JIS X 0208 の 0x2140 に対する文字を U+005C (REVERSE SOLIDUS) 
+    から U+FF3C (FULLWIDTH REVERSE SOLIDUS) に変更した。
+  - MS932 コデックの UCS→MBCS マッピングを Windows 互換にした。
+    (Thanks to 石本さん、森山さん)
+  - encode() の第一引数に Unicode 型と string 型のオブジェクトを
+    渡せるようにした。
+  - エンコード時の UnicodeError メッセージの中で32ビット長の文字
+    コードを \UXXXXXXXX の形で正しくエスケープ表示するようにした。
+  - japanese.ms932 の別名 japanese.windows-31j を追加した。
+
+o バージョン 1.4.8 (2002年9月5日)
+  - EUC-JP, Shift_JIS, MS932 の各コデックにおいて ISO-2022-JP 系
+    コデックが出力した U+00A5 と U+203E がエンコードできない問題
+    を修正。
+  - 配布元 URL と連絡先メールアドレスを変更した。
+
+o バージョン 1.4.7 (2002年7月13日)
+  - encode() および decode() のオプション引数 errors の値が不正
+    な場合に UnicodeError ではなく ValueError を raise するよう
+    にした。
+  - setup.py: japanese.pth 関連のコードをさらに修正。Windows 用
+    Python (バージョン 2.2 以降) に対応した。
+
+o バージョン 1.4.6 (2002年6月4日)
+  - Shift_JIS と MS932 のコデックの半角カナの扱いがおかしい問題
+    を修正。(Thanks to そねさん)
+  - setup.py: japanese.pth 関連のコードを修正。プラットフォーム
+    依存性を取り除いた。
+  - 配布物に MANIFEST.in を含めるようにした。
+
+o バージョン 1.4.5 (2002年4月17日)
+  - 設定用パッケージ japanese.aliases を追加。JapaneseCodecs を
+    デフォルトの日本語コデックとして登録する処理を実装した。また、
+    build_py --without-aliases オプションを追加した。
+
+o バージョン 1.4.4 (2002年3月4日)
+  - 石本さんによる MS932 (Microsoft code page 932) 用コデックを
+    追加した。(Thanks to 石本さん)
+
+o バージョン 1.4.3 (2001年9月27日)
+  - JIX X 0201 Roman の 0x7e (overline) を U+00AF (MACRON) では
+    なく U+203E (OVERLINE) にマッピングするようにした。
+  - JIS X 0201 Roman および JIS X 0201 Katakana で制御文字を不正
+    な文字と見なしていた問題を修正。
+  - Python 2.2 で make test が失敗する問題を修正。
+
+o バージョン 1.4.2 (2001年9月26日)
+  - src/_japanese_codecs.c: エラー文字列の書式指定 (%02x) を修正。
+    (Thanks to 戸田さん)
+
+o バージョン 1.4.1 (2001年9月26日)
+  - src/_japanese_codecs.c: 長さ0の文字列のエンコード/デコードが
+    TypeError になるバグを修正。(Thanks to 前野さん)
+
+o バージョン 1.4 (2001年9月25日)
+  - C言語版のコデックを追加した。
+
+o バージョン 1.3 (2001年6月8日)
+  - ライセンスを GNU GPL から BSD 風のものに変えた。コードの修正
+    は無し。
+
+o バージョン 1.2.2 (2001年1月26日)
+  - StreamReader._read() の引数 size に None を渡すと TypeError 
+    を起こすバグを修正した。
+    (Thanks to Osamu Nakamura <naka@hasaki.sumikin.co.jp>)
+
+o バージョン 1.2.1 (2001年1月10日)
+  - EUC-JP において補助漢字 (JIS X 0212-1990) を扱えるようにした。
+  - ISO-2022-JP-1 [RFC2237] のコデックを追加した。
+  - ISO-2022-JP + JIS X 0201 片仮名のコデックに補助漢字のサポート
+    を追加し、コデック名を ISO-2022-JP-Ext に変更した。
+  - 文字コード表の構成を整理して japanese/mappings の中に移した。
+  - 回帰テストを作成した。
+  - 小さなバグをいくつか修正した。
+
+o バージョン 1.2 (2000年12月16日)
+  - すべてのコデックを "japanese" モジュールの中に移した。
+  - パッケージのインストール先を $lib/site-packages/ に変更した。
+  - ISO-2022-JP において JIS X 0201 ローマ字が指示されているとき
+    に 0x5c と 0x7e をそれぞれ U+00A5 (円記号) と U+00AF (オーバー
+    ライン) に写すようにした。
+    (Thanks to SUZUKI Hisao <suzuki611@okisoft.co.jp>)
+  - ISO-2022-JP + JIS X 0201 片仮名のコデックを追加した。
+    (Thanks to SUZUKI Hisao <suzuki611@okisoft.co.jp>)
+  - JIS X 0201 ローマ字と JIS X 0201 片仮名のコデックを追加した。
+
+o バージョン 1.1.1 (2000年11月30日)
+  - EUC-JP と Shift_JIS において半角カナ (Halfwidth Katakana) を
+    扱えるようにした。
+
+o バージョン 1.1 (2000年11月25日)
+  - ISO-2022-JP (7-bit JIS) 用のコデックを追加した。
+  - StreamReader クラスの read()、readline()、および readlines()
+    を改良した。
+
+o バージョン 1.0.1 (2000年10月26日)
+  - ValueError を UnicodeError に置き換えた。
+    (Thanks to Walter Doerwald <walter@livinglogic.de>)
+
+o バージョン 1.0 (2000年9月6日)
+  - 正式リリース。
+
+謝辞
+----
+
+src/_japanese_codecs.c のプログラムの一部は石本敦夫さんの 
+ms932codec.c のコードに基づいています。石本さんには MS932 用
+コデックも提供していただきました。有用なプログラムを提供して
+下さった石本さんに感謝します。
+
+配布条件
+--------
+
+Copyright (c) 2001 Tamito KAJIYAMA.  All rights reserved.
+
+Permission to use, copy, modify, and distribute this software and its
+documentation for any purpose and without fee is hereby granted,
+provided that the above copyright notice appear in all copies and that
+both that copyright notice and this permission notice appear in
+supporting documentation, and that the name of Tamito KAJIYAMA not be
+used in advertising or publicity pertaining to distribution of the
+software without specific, written prior permission.
+
+TAMITO KAJIYAMA DISCLAIMS ALL WARRANTIES WITH REGARD TO THIS SOFTWARE,
+INCLUDING ALL IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS, IN NO
+EVENT SHALL TAMITO KAJIYAMA BE LIABLE FOR ANY SPECIAL, INDIRECT OR
+CONSEQUENTIAL DAMAGES OR ANY DAMAGES WHATSOEVER RESULTING FROM LOSS OF
+USE, DATA OR PROFITS, WHETHER IN AN ACTION OF CONTRACT, NEGLIGENCE OR
+OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
+PERFORMANCE OF THIS SOFTWARE.
+
+著者
+----
+
+梶山民人 <RD6T-KJYM@asahi-net.or.jp>
+
+このパッケージに関するコメント、提案、パッチを歓迎します。上記の
+メールアドレスまでお気軽にお送り下さい。
+
+$Id: README.ja,v 1.15 2004/11/28 10:16:38 kajiyama Exp $

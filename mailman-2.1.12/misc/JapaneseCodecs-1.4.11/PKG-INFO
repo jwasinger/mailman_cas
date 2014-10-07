@@ -1,0 +1,13 @@
+Metadata-Version: 1.0
+Name: JapaneseCodecs
+Version: 1.4.11
+Summary: Japanese Codecs for Python Unicode Support
+Home-page: http://www.asahi-net.or.jp/~rd6t-kjym/python/
+Author: Tamito KAJIYAMA
+Author-email: RD6T-KJYM@asahi-net.or.jp
+License: a variant of the BSD license
+Description: This package provides Unicode codecs that make Python aware
+        of Japanese character encodings such as EUC-JP, Shift_JIS and
+        ISO-2022-JP.  By using this package, Japanese characters can be
+        treated as a character string instead of a byte sequence.
+Platform: anywhere Python runs
