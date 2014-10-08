@@ -139,11 +139,10 @@ class SecurityManager:
         # Return the authcontext from the argument sequence that matches the
         # response, or UnAuthorized.
         
-        #CAS_SERVER = 'https://login.oregonstate.edu/cas-dev/login'
-        #SERVICE_URL = 'http://192.241.216.182/mailman/admin/'
-        #status, id, cookie = login(CAS_SERVER, SERVICE_URL)
+        CAS_SERVER = 'https://login.oregonstate.edu/cas-dev/login'
+        SERVICE_URL = 'http://192.241.216.182/mailman/admin/'
+        status, cas_id, cookie = pycas.login(CAS_SERVER, SERVICE_URL)
         
-        raise Exception('this is a test exception!')        
         for ac in authcontexts:
             if ac == mm_cfg.AuthCreator:
                 ok = Utils.check_global_password(response, siteadmin=0)
