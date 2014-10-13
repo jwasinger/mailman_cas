@@ -37,7 +37,7 @@ LIBS=
 
 # user and group ids/names
 MAIL_GROUP=     mailman
-CGI_GROUP=	www-data
+CGI_GROUP=	apache
 MAILMAN_USER=	mailman
 
 # Customizable but not set by configure

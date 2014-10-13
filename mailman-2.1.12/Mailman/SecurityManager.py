@@ -129,7 +129,18 @@ class SecurityManager:
         else:
             return None, None
         return key, secret
-
+    
+    def CASAuthenticate(self, list_name):
+        CAS_SERVER = 'http://login.oregonstate.edu/cas-dev/login'
+        SERVICE_URL = 'http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name 
+        syslog('test', SERVICE_URL)
+        status, cas_id, cookie = pycas.login(CAS_SERVER, SERVICE_URL, secure=0)
+        syslog('test', 'status: %s, cas_id: %s, cookie: %s' % (status, cas_id, cookie))
+        return True
+    
+    def ZapCASCookie(self):
+        c=Cookie.SimpleCookie()
+        
     def Authenticate(self, authcontexts, response, user=None):
         # Given a list of authentication contexts, check to see if the
         # response matches one of the passwords.  authcontexts must be a
@@ -139,10 +150,11 @@ class SecurityManager:
         # Return the authcontext from the argument sequence that matches the
         # response, or UnAuthorized.
         
-        CAS_SERVER = 'https://login.oregonstate.edu/cas-dev/login'
-        SERVICE_URL = 'http://192.241.216.182/mailman/admin/'
-        status, cas_id, cookie = pycas.login(CAS_SERVER, SERVICE_URL)
-        
+        #CAS_SERVER = 'https://login.oregonstate.edu/cas-dev/login'
+        #SERVICE_URL = 'http://ssg-test.nws.oregonstate.edu/mailman/admin/'
+        #status, cas_id, cookie = pycas.login(CAS_SERVER, SERVICE_URL)
+        syslog('test', 'this is a test')
+
         for ac in authcontexts:
             if ac == mm_cfg.AuthCreator:
                 ok = Utils.check_global_password(response, siteadmin=0)

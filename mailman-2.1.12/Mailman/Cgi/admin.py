@@ -80,17 +80,21 @@ def main():
     i18n.set_language(mlist.preferred_language)
     # If the user is not authenticated, we're done.
     cgidata = cgi.FieldStorage(keep_blank_values=1)
+    
+    if mm_cfg.MAILMAN_ENABLED:
+        mlist.CASAuthenticate(listname)
 
-    if not mlist.WebAuthenticate((mm_cfg.AuthListAdmin,
-                                  mm_cfg.AuthSiteAdmin),
-                                 cgidata.getvalue('adminpw', '')):
-        if cgidata.has_key('adminpw'):
-            # This is a re-authorization attempt
-            msg = Bold(FontSize('+1', _('Authorization failed.'))).Format()
-        else:
-            msg = ''
-        Auth.loginpage(mlist, 'admin', msg=msg)
-        return
+    else:
+        if not mlist.WebAuthenticate((mm_cfg.AuthListAdmin,
+                                      mm_cfg.AuthSiteAdmin),
+                                     cgidata.getvalue('adminpw', '')):
+            if cgidata.has_key('adminpw'):
+                # This is a re-authorization attempt
+                msg = Bold(FontSize('+1', _('Authorization failed.'))).Format()
+            else:
+                msg = ''
+            Auth.loginpage(mlist, 'admin', msg=msg)
+            return
 
     # Which subcategory was requested?  Default is `general'
     if len(parts) == 1:

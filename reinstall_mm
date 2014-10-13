@@ -28,9 +28,13 @@ chmod a+rx, g+ws
 cd -
 cd mailman-2.1.12
 
-./configure --with-cgi-gid=www-data
+#./configure --with-cgi-gid=www-data ###my vps
+./configure --with-cgi-gid=apache
+
 make
 make install
+
+#after install, need a way to copy cas_redirect file to cgi-bin in installation directory 
 
 cd $MAILMAN_INSTALL_DIR
 

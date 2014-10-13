@@ -41,7 +41,7 @@ PACKAGEDIR= 	$(prefix)/Mailman
 CGIDIR=		$(PACKAGEDIR)/Cgi
 SHELL=		/bin/sh
 
-CGI_MODULES=	*.py
+CGI_MODULES=	*.py cas_redirect.py
 
 
 # Modes for directories and executables created by the install
