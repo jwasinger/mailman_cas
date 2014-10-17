@@ -131,11 +131,9 @@ class SecurityManager:
         return key, secret
     
     def CASAuthenticate(self, list_name):
-        CAS_SERVER = 'http://login.oregonstate.edu/cas-dev/login'
+        CAS_SERVER = mm_cfg.CAS_SERVER_URL
         SERVICE_URL = 'http://ssg-test.nws.oregonstate.edu/mailman/admin/' + list_name 
-        syslog('test', SERVICE_URL)
         status, cas_id, cookie = pycas.login(CAS_SERVER, SERVICE_URL, secure=0)
-        syslog('test', 'status: %s, cas_id: %s, cookie: %s' % (status, cas_id, cookie))
         return True
     
     def ZapCASCookie(self):

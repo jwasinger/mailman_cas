@@ -109,8 +109,12 @@ def main():
 
     # Is this a log-out request?
     if category == 'logout':
-        print mlist.ZapCookie(mm_cfg.AuthListAdmin)
-        Auth.loginpage(mlist, 'admin', frontpage=1)
+        #print mlist.ZapCookie(mm_cfg.AuthListAdmin)
+        #Auth.loginpage(mlist, 'admin', frontpage=1)
+        
+        #redirect to List Expiration tool user home page
+        print('Location: %s' % mm_cfg.LIST_EXPIRATION_URL)
+        print
         return
 
     # Sanity check

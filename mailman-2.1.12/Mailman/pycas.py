@@ -118,6 +118,7 @@ import md5
 import time
 import urllib
 import urlparse
+import mm_cfg
 
 #-----------------------------------------------------------------------
 #  Functions
@@ -169,7 +170,12 @@ def make_pycas_cookie(val, domain, path, secure, expires=None):
 
 #  Send redirect to client.  This function does not return, i.e. it teminates this script.
 def do_redirect(cas_host, service_url, opt, secure):
-    cas_url  = cas_host + "/cas/login?service=" + service_url
+    
+    if mm_cfg.USE_CAS_DEV:
+        cas_url  = cas_host + "/cas-dev/login?service=" + service_url
+    else:
+        cas_url  = cas_host + "/cas/login?service=" + service_url
+
     if opt in ("renew","gateway"):
         cas_url += "&%s=true" % opt
     #  Print redirect page to browser
@@ -245,7 +251,7 @@ def decode_cookie(cookie_vals,lifetime=None):
 #  Validate ticket using cas 1.0 protocol
 def validate_cas_1(cas_host, service_url, ticket):
     #  Second Call to CAS server: Ticket found, verify it.
-    if USE_CAS_DEV:
+    if mm_cfg.USE_CAS_DEV:
         cas_validate = cas_host + "/cas/validate?ticket=" + ticket + "&service=" + service_url
     else:
         cas_validate = cas_host + "/cas-dev/validate?ticket=" + ticket + "&service=" + service_url
