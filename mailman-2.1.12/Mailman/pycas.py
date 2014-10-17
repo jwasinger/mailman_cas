@@ -76,6 +76,8 @@ SECRET = "7e16162998eb7efafb1498f75190a937"
 #  Name field for pycas cookie
 PYCAS_NAME = "pycas"
 
+USE_CAS_DEV = True # specifies whether or not to use the OSU cas-dev server
+
 #  CAS Staus Codes:  returned to calling program by login() function.
 CAS_OK               = 0  #  CAS authentication successful.
 CAS_COOKIE_EXPIRED   = 1  #  PYCAS cookie exceeded its lifetime.
@@ -116,8 +118,6 @@ import md5
 import time
 import urllib
 import urlparse
-
-from Mailman.Logging.Syslog import syslog
 
 #-----------------------------------------------------------------------
 #  Functions
@@ -171,7 +171,7 @@ def make_pycas_cookie(val, domain, path, secure, expires=None):
 def do_redirect(cas_host, service_url, opt, secure):
     cas_url  = cas_host + "/cas/login?service=" + service_url
     if opt in ("renew","gateway"):
-        cas_url += "&amp;%s=true" % opt
+        cas_url += "&%s=true" % opt
     #  Print redirect page to browser
     print "Refresh: 0; url=%s" % cas_url
     print "Content-type: text/html"
@@ -245,7 +245,11 @@ def decode_cookie(cookie_vals,lifetime=None):
 #  Validate ticket using cas 1.0 protocol
 def validate_cas_1(cas_host, service_url, ticket):
     #  Second Call to CAS server: Ticket found, verify it.
-    cas_validate = cas_host + "/cas/validate?ticket=" + ticket + "&amp;service=" + service_url
+    if USE_CAS_DEV:
+        cas_validate = cas_host + "/cas/validate?ticket=" + ticket + "&service=" + service_url
+    else:
+        cas_validate = cas_host + "/cas-dev/validate?ticket=" + ticket + "&service=" + service_url
+         
     f_validate   = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.readline()
@@ -267,12 +271,19 @@ def validate_cas_1(cas_host, service_url, ticket):
 #    The 2.0 protocol allows the use of the mutually exclusive "renew" and "gateway" options.
 def validate_cas_2(cas_host, service_url, ticket, opt):
     #  Second Call to CAS server: Ticket found, verify it.
-    cas_validate = cas_host + "/cas/serviceValidate?ticket=" + ticket + "&amp;service=" + service_url
+    
+    if USE_CAS_DEV:
+        cas_validate = cas_host + "/cas-dev/serviceValidate?ticket=" + ticket + "&service=" + service_url
+    else:
+        cas_validate = cas_host + "/cas/serviceValidate?ticket=" + ticket + "&service=" + service_url
+        
     if opt:
-        cas_validate += "&amp;%s=true" % opt
+        cas_validate += "&%s=true" % opt
     f_validate   = urllib.urlopen(cas_validate)
     #  Get first line - should be yes or no
     response = f_validate.read()
+    writelog(cas_validate)
+
     id = parse_tag(response,"cas:user")
     #  Ticket does not validate, return error
     if id=="":
