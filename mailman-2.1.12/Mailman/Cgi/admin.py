@@ -81,7 +81,7 @@ def main():
     # If the user is not authenticated, we're done.
     cgidata = cgi.FieldStorage(keep_blank_values=1)
     
-    if mm_cfg.CAS_ENABLED:
+    if mm_cfg.ENABLE_CAS:
         mlist.CASAuthenticate(listname)
 
     else:
